@@ -1,0 +1,553 @@
+//--------------------------------SignUp/Index PAge HTML ------------------------------------------
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/crypto-js.js"></script>
+
+</head>
+
+<body>
+    <nav class="navbar">
+        <div class="navbar-title">Todo List</div>
+        <div>
+            <a class="navbar-button" href="login.html">Login</a>
+        </div>
+    </nav>
+
+    <div class="main-container">
+        <div class="container">
+            <div class="form-container" id="signup-form">
+                <title>Signup Page</title>
+
+                <h2>Signup</h2>
+                <form action="/login.html" id="signupForm">
+                    <label for="username">Username:</label>
+                    <input type="text" id="signup-username" required>
+                    <label for="email">Email:</label>
+                    <input type="email" id="email" required>
+                    <label for="password">Password (minimum 8 characters):</label>
+                    <input type="password" id="signup-password" required pattern=".{8,}">
+                    <button type="submit">Sign Up</button>
+                </form>
+                <p>Already have an account? <a href="login.html">Login</a></p>
+                <script src="signup.js"></script>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
+
+
+
+
+
+
+//--------------------------------SignUp PAge JS ------------------------------------------
+
+
+
+const signupForm = document.getElementById("signupForm");
+const loginForm = document.getElementById("loginForm");
+const signupMessage = document.getElementById("signup-message");
+
+signupForm.addEventListener("submit", function (e) {
+  e.preventDefault();
+
+  const signupUsername = document.getElementById("signup-username").value;
+  const signupEmail = document.getElementById("email").value;
+  const signupPassword = document.getElementById("signup-password").value;
+
+  const hashedPassword = hashPassword(signupPassword);
+
+  const myData = {
+    name: signupUsername,
+    email: signupEmail,
+    password: hashedPassword, 
+  };
+
+  let users = JSON.parse(localStorage.getItem("users")) || [];
+
+  const userExists = users.some((user) => user.email === signupEmail);
+
+  if (userExists) {
+    alert("Username or email already exists. Please choose a different one.");
+  } else {
+    users.push(myData);
+    localStorage.setItem("users", JSON.stringify(users));
+    signupForm.submit();
+  }
+});
+
+
+function hashPassword(password) {
+  const hashedPassword = CryptoJS.SHA256(password).toString(CryptoJS.enc.Hex);
+  return hashedPassword;
+}
+
+
+
+
+//--------------------------------LogIn PAge HTML ------------------------------------------
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="styles.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/crypto-js.js"></script>
+
+</head>
+
+<body>
+  <nav class="navbar">
+    <div class="navbar-title">Todo List</div>
+    <div>
+      <button class="navbar-button"id="SignUp">SignUp</button>
+    </div>
+
+  </nav>
+  <div class="main-container">
+    <div class="container">
+      <div class="form-container" id="login-form">
+        <h2>Login</h2>
+        <form id="loginForm">
+          <label for="email">Email:</label>
+          <input type="email" id="email" required>
+          <label for="password">Password:</label>
+          <input type="password" id="password" required>
+          <button type="submit">Login</button>
+        </form>
+        <p>Don't have an account? <a href="index.html">Sign Up</a></p>
+        <script src="login.js"></script>
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>
+
+//--------------------------------LogIn PAge JS ------------------------------------------
+
+const loginForm = document.getElementById("loginForm");
+const loginMessage = document.getElementById("login-message");
+
+const storedUserData = JSON.parse(localStorage.getItem("userData")) || {};
+
+
+loginForm.addEventListener("submit", function (e) 
+{
+    e.preventDefault();
+    const loginEmail = document.getElementById("email").value;
+    const loginPassword = document.getElementById("password").value;
+    const userPresentEmail={email:loginEmail};
+    let users = JSON.parse(localStorage.getItem('users')) || [];
+    const matchedUser = users.find(user => user.email === loginEmail && user.password === hashPassword(loginPassword));
+    
+    if (matchedUser) 
+    {
+        localStorage.setItem("UserPresent", JSON.stringify(userPresentEmail));
+        console.log("REACHED HERE");
+        window.location.href="home.html"
+    } 
+    else 
+    {
+        alert('Invalid username or password. Please try again.');
+    }
+ }
+ 
+   
+);
+
+  const signupbutton = document.getElementById("SignUp");
+  signupbutton.addEventListener("click", () => {
+  window.location.href = "index.html";
+
+});
+
+
+
+function hashPassword(password) {
+  const hashedPassword = CryptoJS.SHA256(password).toString(CryptoJS.enc.Hex);
+  return hashedPassword;
+}
+//--------------------------------Home PAge HTML ------------------------------------------
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="main.css">    
+    <title>TODD List</title>
+</head>
+
+<body>
+    <nav class="navbar">
+        <div id="navtitle" class="navbar-title">TODO List</div>
+        <div>
+            <button  onclick="logout()">Logout</button>
+        </div>
+    </nav>
+<div>
+    <h2>
+        Logged in as <p id="usernameDisplay"></p>
+
+
+    </h2>
+    
+</div>
+    <div class="main-container">
+
+    <div class="container">
+        <div class="header">
+            <h1>TODO List</h1>
+            <div class="username" id="username"></div>
+        </div>
+        <div>
+            <form id="task-form">
+                <input type="text" id="task-input" placeholder="Add a new task" required>
+                <button type="submit">Add</button>
+            </form>
+            <div id="task-list"></div>
+        </div>
+     </div>
+    </div>
+    <script src="home.js"></script>
+
+
+</body>
+</html>
+
+
+//--------------------------------Home PAge JS ------------------------------------------
+const taskForm = document.getElementById("task-form");
+const taskInput = document.getElementById("task-input");
+const taskList = document.getElementById("task-list");
+const usernameDisplay = document.getElementById("usernameDisplay");
+
+const userEmail = JSON.parse(localStorage.getItem("UserPresent"));
+
+const tasksData = JSON.parse(localStorage.getItem("tasksData")) || {};
+
+if (userEmail) {
+    usernameDisplay.textContent = "Hello, " + userEmail.email + "   !";
+} else {
+    usernameDisplay.textContent = "No user email found.";
+}
+
+if (tasksData[userEmail.email]) {
+    tasksData[userEmail.email].forEach(task => {
+        addTaskToList(task);
+    });
+}
+
+taskForm.addEventListener("submit", function (e) {
+    e.preventDefault();
+    const taskText = taskInput.value.trim();
+
+    if (taskText !== "") {
+        if (!tasksData[userEmail.email]) {
+            tasksData[userEmail.email] = [];
+        }
+
+        tasksData[userEmail.email].push(taskText);
+        updateLocalStorage();
+
+        addTaskToList(taskText);
+        taskInput.value = "";
+    }
+});
+
+function updateLocalStorage() {
+    localStorage.setItem("tasksData", JSON.stringify(tasksData));
+}
+
+function addTaskToList(taskText) {
+    const taskItem = document.createElement("div");
+    taskItem.classList.add("task");
+    taskItem.innerHTML = `
+        <input type="text" value="${taskText}" readonly>
+        <button class="edit">Edit</button>
+        <button class="delete">Delete</button>
+    `;
+
+    taskItem.querySelector(".edit").addEventListener("click", function () {
+        const editText = prompt("Edit task:", taskText);
+        if (editText !== null) {
+            taskItem.querySelector("input").value = editText;
+            tasksData[userEmail.email][tasksData[userEmail.email].indexOf(taskText)] = editText;
+            updateLocalStorage();
+        }
+    });
+
+    taskItem.querySelector(".delete").addEventListener("click", function () {
+        taskList.removeChild(taskItem);
+        tasksData[userEmail.email] = tasksData[userEmail.email].filter(task => task !== taskText);
+        updateLocalStorage();
+    });
+
+    taskList.appendChild(taskItem);
+}
+
+
+function logout() {
+    localStorage.removeItem('UserPresent');
+    localStorage.removeItem('email');
+    window.location.href = "login.html";
+}
+
+
+
+
+//--------------------------------Main css------------------------------------------
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    background-color: #f4f4f4;
+  }
+  
+  .container {
+
+    background-color: #34191937;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    width: 300px;
+  }
+  .main-container{
+     display: flex;
+   justify-content: center;
+   align-items: center;
+   flex: 1;
+    margin-top: 10rem;
+  }
+  
+  h1 {
+    text-align: center;
+    color: #4000ff;
+    margin-bottom: 15px;
+  }
+  h2 {
+    text-align: center;
+    margin-bottom: 15px;
+  }
+  
+  form {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  label {
+    font-weight: bold;
+    margin-bottom: 5px;
+  }
+  
+  input {
+    padding: 8px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  button {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 10px;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  a {
+    text-decoration: none;
+    color: #007bff;
+  }
+  
+  a:hover {
+    text-decoration: underline;
+  }
+  
+  .navbar {
+    display: flex;
+    flex: 1;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #5156d6;
+    color: white;
+    padding: 10px 20px;
+}
+
+.navbar-title {
+    font-size: 24px;
+}
+
+.navbar-button {
+    background-color: #555;
+    color: white;
+    padding: 6px 12px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.navbar-button:hover {
+    background-color: #777;
+}body {
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            max-width: 600px;
+            margin: auto;
+            padding: 20px;
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .username {
+            font-weight: bold;
+        }
+        .task {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        .task input[type="text"] {
+            flex-grow: 1;
+            margin-right: 10px;
+        }
+        .task button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+
+
+//--------------------------------Style Css------------------------------------------
+
+
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    background-color: #f4f4f4;
+  }
+  
+  .container {
+
+    background-color: #34191937;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    width: 300px;
+  }
+  .main-container{
+     display: flex;
+   justify-content: center;
+   align-items: center;
+   flex: 1;
+    margin-top: 10rem;
+  }
+  
+  h1 {
+    text-align: center;
+    color: #4000ff;
+    margin-bottom: 15px;
+  }
+  h2 {
+    text-align: center;
+    margin-bottom: 15px;
+  }
+  
+  form {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  label {
+    font-weight: bold;
+    margin-bottom: 5px;
+  }
+  
+  input {
+    padding: 8px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  button {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 10px;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  a {
+    text-decoration: none;
+    color: #007bff;
+  }
+  
+  a:hover {
+    text-decoration: underline;
+  }
+  
+  .navbar {
+    display: flex;
+    flex: 1;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #5156d6;
+    color: white;
+    padding: 10px 20px;
+}
+
+/* Styling for the title */
+.navbar-title {
+    font-size: 24px;
+    text-align: center;
+    align-items: center;
+
+}
+
+/* Styling for the buttons */
+.navbar-button {
+    background-color: #e3e703;
+    color: rgb(15, 14, 14);
+    padding: 6px 12px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.navbar-button:hover {
+    background-color: #777;
+}
+
+
+
+
+
+//------------------------------------------------------------------------------

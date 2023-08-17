@@ -1,0 +1,142 @@
+body 
+{
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    background-color: #f4f4f4;
+  }
+  
+  .container 
+  {
+
+    background-color: #34191937;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    width: 300px;
+    max-width: 600px;
+    margin: auto;
+    padding: 20px;
+
+  }
+  .main-container
+  {
+     display: flex;
+   justify-content: center;
+   align-items: center;
+   flex: 1;
+    margin-top: 10rem;
+  }
+  
+  h1 
+  {
+    text-align: center;
+    color: #4000ff;
+    margin-bottom: 15px;
+  }
+  h2 
+  {
+    text-align: center;
+    margin-bottom: 15px;
+  }
+  
+  form 
+  {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  label 
+  {
+    font-weight: bold;
+    margin-bottom: 5px;
+  }
+  
+  input 
+  {
+    padding: 8px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  button 
+  {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 10px;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  a 
+  {
+    text-decoration: none;
+    color: #007bff;
+  }
+  
+  a:hover 
+  {
+    text-decoration: underline;
+  }
+  
+  .navbar 
+  {
+    display: flex;
+    flex: 1;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #5156d6;
+    color: white;
+    padding: 10px 20px;
+}
+
+.navbar-title 
+{
+    font-size: 24px;
+}
+
+.navbar-button 
+{
+    background-color: #555;
+    color: white;
+    padding: 6px 12px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.navbar-button:hover 
+{
+    background-color: #777;
+}
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.username {
+    font-weight: bold;
+}
+.task {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+.task input[type="text"] {
+    flex-grow: 1;
+    margin-right: 10px;
+}
+.task button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+}

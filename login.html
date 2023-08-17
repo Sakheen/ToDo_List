@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="styles.css">
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/crypto-js.js"></script>
+
+</head>
+
+<body>
+  <nav class="navbar">
+    <div class="navbar-title">Todo List</div>
+    <div>
+      <button class="navbar-button"id="SignUp">SignUp</button>
+    </div>
+
+  </nav>
+  <div class="main-container">
+    <div class="container">
+      <div class="form-container" id="login-form">
+        <h2>Login</h2>
+        <form id="loginForm">
+          <label for="email">Email:</label>
+          <input type="email" id="email" required>
+          <label for="password">Password:</label>
+          <input type="password" id="password" required>
+          <button type="submit">Login</button>
+        </form>
+        <p>Don't have an account? <a href="index.html">Sign Up</a></p>
+      </div>
+    </div>
+  </div>
+</body>
+<script src="login.js"></script>
+
+</html>
